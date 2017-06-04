@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficSim.WinForms", "TrafficSim.WinForms\TrafficSim.WinForms.csproj", "{DA27C708-093F-49AF-8246-2E1757BAB98A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrafficSim.Core", "TrafficSim.Core\TrafficSim.Core.csproj", "{B05B266A-8D05-40E1-9225-27BD62B69A0C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DA27C708-093F-49AF-8246-2E1757BAB98A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA27C708-093F-49AF-8246-2E1757BAB98A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA27C708-093F-49AF-8246-2E1757BAB98A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA27C708-093F-49AF-8246-2E1757BAB98A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B05B266A-8D05-40E1-9225-27BD62B69A0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B05B266A-8D05-40E1-9225-27BD62B69A0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B05B266A-8D05-40E1-9225-27BD62B69A0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B05B266A-8D05-40E1-9225-27BD62B69A0C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

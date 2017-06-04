@@ -121,7 +121,7 @@ namespace TrafficSim.Core
             var matchingCars =
                 _cars.Where(
                     c =>
-                        c.Phase.Location.X == intentedPhase.Location.X && c.Phase.Location.Y == intentedPhase.Location.Y);
+                        c.Phase.Location.Equals(intentedPhase.Location));
             
             foreach (var otherCar in matchingCars)
             {

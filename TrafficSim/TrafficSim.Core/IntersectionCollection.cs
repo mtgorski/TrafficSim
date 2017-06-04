@@ -19,7 +19,7 @@ namespace TrafficSim.Core
         {
             foreach (var intersection in _intersections)
             {
-                intersection.MoveNext();
+                intersection.Tick();
             }
         }
 
@@ -33,26 +33,9 @@ namespace TrafficSim.Core
             return _intersections.GetEnumerator();
         }
 
-        public bool WillAllowPhase(Phase phase)
-        {
-            var x = phase.Location.X;
-            var y = phase.Location.Y;
-            switch (phase.Direction)
-            {
-                case Direction.South:
-                    y += 10;
-                    break;
-                case Direction.East:
-                    x += 10;
-                    break;
-                case Direction.North:
-                    y -= 10;
-                    break;
-                case Direction.West:
-                    x -= 10;
-                    break;
-            }
-            var intersectionLocation = new Location {X = x, Y = y};
+        public bool WillAllowPhase(Phase intendedPhase)
+        {           
+            var intersectionLocation = intendedPhase.GetPhasedAdvancedBy(10).Location;
 
             var relevantIntersection =
                 _intersections.SingleOrDefault(intersection => intersection.Location.Equals(intersectionLocation));
@@ -60,19 +43,7 @@ namespace TrafficSim.Core
             if (relevantIntersection == null)
                 return true;
 
-            switch (phase.Direction)
-            {
-                case Direction.East:
-                    return relevantIntersection.Left == Color.Green;
-                case Direction.North:
-                    return relevantIntersection.Bottom == Color.Green;
-                case Direction.South:
-                    return relevantIntersection.Top == Color.Green;
-                case Direction.West:
-                    return relevantIntersection.Right == Color.Green;
-                default:
-                    throw new ArgumentException("Unexpected direction");
-            }
+            return relevantIntersection.Lights[intendedPhase.Direction] == Color.Green;            
         }
     }
 }

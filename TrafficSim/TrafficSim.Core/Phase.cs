@@ -12,16 +12,16 @@
             switch (Direction)
             {
                 case Direction.South:
-                    y += 10;
+                    y += magnitude;
                     break;
                 case Direction.East:
-                    x += 10;
+                    x += magnitude;
                     break;
                 case Direction.North:
-                    y -= 10;
+                    y -= magnitude;
                     break;
                 case Direction.West:
-                    x -= 10;
+                    x -= magnitude;
                     break;
 
             }

@@ -39,6 +39,7 @@ namespace TrafficSim.WinForms
             var colors = new Dictionary<Color, Pen>
             {
                 {Color.Red, new Pen(Color.Red, 3)},
+                {Color.Yellow, new Pen(Color.Yellow, 3) },
                 {Color.Green, new Pen(Color.Green, 3)}
             };
 
@@ -46,10 +47,10 @@ namespace TrafficSim.WinForms
 
             foreach (var intersection in _intersections)
             {
-                graphics.DrawLine(colors[intersection.Left], intersection.Location.X - trafficLineOffset, intersection.Location.Y - trafficLineOffset, intersection.Location.X - trafficLineOffset, intersection.Location.Y + trafficLineOffset);
-                graphics.DrawLine(colors[intersection.Top], intersection.Location.X - trafficLineOffset, intersection.Location.Y + trafficLineOffset, intersection.Location.X + trafficLineOffset, intersection.Location.Y + trafficLineOffset);
-                graphics.DrawLine(colors[intersection.Right], intersection.Location.X + trafficLineOffset, intersection.Location.Y - trafficLineOffset, intersection.Location.X + trafficLineOffset, intersection.Location.Y + trafficLineOffset);
-                graphics.DrawLine(colors[intersection.Bottom], intersection.Location.X - trafficLineOffset, intersection.Location.Y - trafficLineOffset, intersection.Location.X + trafficLineOffset, intersection.Location.Y - trafficLineOffset);
+                graphics.DrawLine(colors[intersection.Lights[Direction.East]], intersection.Location.X - trafficLineOffset, intersection.Location.Y - trafficLineOffset, intersection.Location.X - trafficLineOffset, intersection.Location.Y + trafficLineOffset);
+                graphics.DrawLine(colors[intersection.Lights[Direction.South]], intersection.Location.X - trafficLineOffset, intersection.Location.Y + trafficLineOffset, intersection.Location.X + trafficLineOffset, intersection.Location.Y + trafficLineOffset);
+                graphics.DrawLine(colors[intersection.Lights[Direction.West]], intersection.Location.X + trafficLineOffset, intersection.Location.Y - trafficLineOffset, intersection.Location.X + trafficLineOffset, intersection.Location.Y + trafficLineOffset);
+                graphics.DrawLine(colors[intersection.Lights[Direction.North]], intersection.Location.X - trafficLineOffset, intersection.Location.Y - trafficLineOffset, intersection.Location.X + trafficLineOffset, intersection.Location.Y - trafficLineOffset);
             }
 
             var carPens = new List<Tuple<float, Pen>>

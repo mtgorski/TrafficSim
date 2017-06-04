@@ -7,9 +7,9 @@ namespace TrafficSim.Core
 {
     public class CarCollection : IEnumerable<Car>
     {
-        private StreetDescription _streets;
-        private List<Car> _cars;
-        private Random _rng = new Random();
+        private readonly StreetDescription _streets;
+        private readonly List<Car> _cars;
+        private readonly Random _rng = new Random();
 
         public CarCollection(StreetDescription streets)
         {
@@ -27,7 +27,7 @@ namespace TrafficSim.Core
             return _cars.GetEnumerator();
         }
 
-        public void InjectCars()
+        private void InjectCars()
         {
             foreach (var road in _streets.HorizontalRoads)
             {
@@ -76,11 +76,13 @@ namespace TrafficSim.Core
             }
         }
 
-        public void MoveNext(IntersectionCollection intersections)
+        public void Tick(IntersectionCollection intersections)
         {
+            InjectCars();
+
             foreach (var car in _cars)
             {
-                car.MoveNext(intersections, this);
+                car.Tick(intersections, this);
             }
 
             var toDelete = new List<Car>();

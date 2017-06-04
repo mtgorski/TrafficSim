@@ -15,7 +15,7 @@ namespace TrafficSim.Core
             _intersections = intersections.ToList();
         }
 
-        public void MoveNext()
+        public void Tick()
         {
             foreach (var intersection in _intersections)
             {

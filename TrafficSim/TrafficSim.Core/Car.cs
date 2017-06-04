@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace TrafficSim.Core
+﻿namespace TrafficSim.Core
 {
     public class Car
     {
-        private int _timesWaiting = 0;
-        private int _timesMoving = 0;
+        private int _timesWaiting;
+        private int _timesMoving;
         public Car(int x, int y, Direction direction)
         {
             Phase = new Phase {Direction = direction, Location = new Location {X = x, Y = y} };
@@ -15,7 +13,7 @@ namespace TrafficSim.Core
 
         public Phase Phase { get; private set; }
 
-        public void MoveNext(IntersectionCollection intersections, CarCollection cars)
+        public void Tick(IntersectionCollection intersections, CarCollection cars)
         {
             var intendedPhase = Phase.GetPhasedAdvancedBy(10);
 

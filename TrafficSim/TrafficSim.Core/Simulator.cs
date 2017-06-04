@@ -1,25 +1,20 @@
-﻿using System.Collections.Generic;
-
-namespace TrafficSim.Core
+﻿namespace TrafficSim.Core
 {
     public class Simulator
     {
-        private CarCollection _carCollection;
-        private IntersectionCollection _intersections;
-        private StreetDescription _streets;
+        private readonly CarCollection _carCollection;
+        private readonly IntersectionCollection _intersections;
 
-        public Simulator(StreetDescription streets, IntersectionCollection intersections, CarCollection carCollection)
+        public Simulator(IntersectionCollection intersections, CarCollection carCollection)
         {
-            _streets = streets;
             _intersections = intersections;
             _carCollection = carCollection;
         }
 
-        public void MoveNext()
+        public void Tick()
         {
-            _carCollection.InjectCars();
-            _carCollection.MoveNext(_intersections);
-            _intersections.MoveNext();
+            _carCollection.Tick(_intersections);
+            _intersections.Tick();
         }
     }
 }

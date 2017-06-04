@@ -31,30 +31,46 @@ namespace TrafficSim.Core
         {
             foreach (var road in _streets.HorizontalRoads)
             {
-                if (_rng.Next(10) < 3)
+                if (_rng.Next(10) < 2)
                 {
-                    if(!_cars.Any(car => car.X == 0 && car.Y == road && car.Direction == Direction.East))
+                    var injectionPhase = new Phase {Direction = Direction.East, Location = new Location {X = 0, Y = road} };
+                    if(!_cars.Any(car => car.Phase.Equals(injectionPhase)))
                         _cars.Add(new Car(0, road, Direction.East));
                 }
 
-                if (_rng.Next(10) < 3)
+                if (_rng.Next(10) < 2)
                 {
-                    if (!_cars.Any(car => car.X == 1100 && car.Y == road && car.Direction == Direction.West))
+                    var injectionPhase = new Phase
+                    {
+                        Direction = Direction.West,
+                        Location = new Location {X = 1100, Y = road}
+                    };
+                    if (!_cars.Any(car => car.Phase.Equals(injectionPhase)))
                         _cars.Add(new Car(1100, road, Direction.West));
                 }
             }
 
             foreach (var road in _streets.VerticalRoads)
             {
-                if (_rng.Next(10) < 3)
+                if (_rng.Next(10) < 2)
                 {
-                    if(!_cars.Any(car => car.X == road && car.Y == 0 && car.Direction == Direction.South))
+                    var injectionPhase = new Phase
+                    {
+                        Direction = Direction.South,
+                        Location = new Location {X = road, Y = 0}
+                    };
+                    if(!_cars.Any(car => car.Phase.Equals(injectionPhase)))
                         _cars.Add(new Car(road, 0, Direction.South));
                 }
 
-                if (_rng.Next(10) < 3)
+                if (_rng.Next(10) < 2)
                 {
-                    if (!_cars.Any(car => car.X == road && car.Y == 1100 && car.Direction == Direction.North))
+                    var injectionPhase = new Phase
+                    {
+                        Direction = Direction.North,
+                        Location = new Location {X = road, Y = 1100}
+                    };
+                    if (!_cars.Any(car => car.Phase.Equals(injectionPhase)))
                         _cars.Add(new Car(road, 1100, Direction.North));
                 }
             }
@@ -71,19 +87,23 @@ namespace TrafficSim.Core
 
             foreach (var car in _cars)
             {
-                var sameLocationCars = _cars.Where(otherCar => car.X == otherCar.X && car.Y == otherCar.Y && otherCar != car);
-                if(sameLocationCars.Any(otherCar => otherCar.Direction == car.Direction))
+                var sameLocationCars = _cars.Where(otherCar => car.Phase.Location.Equals(otherCar.Phase.Location) && otherCar != car);
+
+                if(sameLocationCars.Any(otherCar => otherCar.Phase.Direction == car.Phase.Direction))
                     throw new InvalidOperationException("Rear Ender!");
                 if(sameLocationCars.Any(otherCar => 
-                    (otherCar.Direction == Direction.East && car.Direction != Direction.West)
-                    || otherCar.Direction == Direction.West && car.Direction != Direction.East
-                    || otherCar.Direction == Direction.North && car.Direction != Direction.South
-                    || otherCar.Direction == Direction.South && car.Direction != Direction.North
-                    ))
+                    (!otherCar.Phase.Direction.IsOpposite(car.Phase.Direction)
+                    )))
                     throw new InvalidOperationException("TBone!");
 
-                if(car.X < 0 || car.X > 1100)
+                if (car.Phase.Location.X < 0 || car.Phase.Location.X > 1100)
+                {
                     toDelete.Add(car);
+                }
+                else if (car.Phase.Location.Y < 0 || car.Phase.Location.Y > 1100)
+                {
+                    toDelete.Add(car);
+                }  
             }
 
             foreach (var car in toDelete)
@@ -94,28 +114,19 @@ namespace TrafficSim.Core
 
        
 
-        public bool WillAllow(Car car)
+        public bool WillAllowPhase(Car car, Phase intentedPhase)
         {
             var matchingCars =
                 _cars.Where(
                     c =>
-                        c.X == car.IntendedLocation.Item1 && c.Y == car.IntendedLocation.Item2);
-
+                        c.Phase.Location.X == intentedPhase.Location.X && c.Phase.Location.Y == intentedPhase.Location.Y);
+            
             foreach (var otherCar in matchingCars)
             {
                 if (otherCar == car)
                     continue;
 
-                if (otherCar.Direction == Direction.East && car.Direction == Direction.West)
-                    continue;
-
-                if(otherCar.Direction == Direction.South && car.Direction == Direction.North)
-                    continue;
-
-                if(otherCar.Direction == Direction.West && car.Direction == Direction.East)
-                    continue;
-
-                if(otherCar.Direction == Direction.North && car.Direction == Direction.South)
+                if (otherCar.Phase.Direction.IsOpposite(intentedPhase.Direction))
                     continue;
 
                 return false;

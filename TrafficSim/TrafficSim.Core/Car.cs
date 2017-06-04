@@ -8,43 +8,20 @@ namespace TrafficSim.Core
         private int _timesMoving = 0;
         public Car(int x, int y, Direction direction)
         {
-            X = x;
-            Y = y;
-            Direction = direction;
+            Phase = new Phase {Direction = direction, Location = new Location {X = x, Y = y} };
         }
 
-        public Direction Direction { get; set; }
+        public float Frustration { get; private set; }
 
-        public int X { get; private set; }
-        public int Y { get; private set; }
+        public Phase Phase { get; private set; }
 
         public void MoveNext(IntersectionCollection intersections, CarCollection cars)
         {
-            var x = X;
-            var y = Y;
-            switch (Direction)
+            var intendedPhase = Phase.GetPhasedAdvancedBy(10);
+
+            if (intersections.WillAllowPhase(intendedPhase) && cars.WillAllowPhase(this, intendedPhase))
             {
-                case Direction.South:
-                    y += 10;
-                    break;
-                case Direction.East:
-                    x += 10;
-                    break;
-                case Direction.North:
-                    y -= 10;
-                    break;
-                case Direction.West:
-                    x -= 10;
-                    break;
-
-            }
-
-            IntendedLocation = new Tuple<int, int>(x, y);
-
-            if (intersections.WillAllow(x, y, Direction) && cars.WillAllow(this))
-            {
-                X = x;
-                Y = y;
+                Phase = intendedPhase;
                 _timesMoving++;
             }
             else
@@ -55,8 +32,7 @@ namespace TrafficSim.Core
             Frustration = (float)_timesWaiting / (_timesMoving + _timesWaiting);
         }
 
-        public float Frustration { get; private set; }
+        
 
-        public Tuple<int, int> IntendedLocation { get; set; }
     }
 }

@@ -46,10 +46,10 @@ namespace TrafficSim.WinForms
 
             foreach (var intersection in _intersections)
             {
-                graphics.DrawLine(colors[intersection.Left], intersection.X - trafficLineOffset, intersection.Y - trafficLineOffset, intersection.X - trafficLineOffset, intersection.Y + trafficLineOffset);
-                graphics.DrawLine(colors[intersection.Top], intersection.X - trafficLineOffset, intersection.Y + trafficLineOffset, intersection.X + trafficLineOffset, intersection.Y + trafficLineOffset);
-                graphics.DrawLine(colors[intersection.Right], intersection.X + trafficLineOffset, intersection.Y - trafficLineOffset, intersection.X + trafficLineOffset, intersection.Y + trafficLineOffset);
-                graphics.DrawLine(colors[intersection.Bottom], intersection.X - trafficLineOffset, intersection.Y - trafficLineOffset, intersection.X + trafficLineOffset, intersection.Y - trafficLineOffset);
+                graphics.DrawLine(colors[intersection.Left], intersection.Location.X - trafficLineOffset, intersection.Location.Y - trafficLineOffset, intersection.Location.X - trafficLineOffset, intersection.Location.Y + trafficLineOffset);
+                graphics.DrawLine(colors[intersection.Top], intersection.Location.X - trafficLineOffset, intersection.Location.Y + trafficLineOffset, intersection.Location.X + trafficLineOffset, intersection.Location.Y + trafficLineOffset);
+                graphics.DrawLine(colors[intersection.Right], intersection.Location.X + trafficLineOffset, intersection.Location.Y - trafficLineOffset, intersection.Location.X + trafficLineOffset, intersection.Location.Y + trafficLineOffset);
+                graphics.DrawLine(colors[intersection.Bottom], intersection.Location.X - trafficLineOffset, intersection.Location.Y - trafficLineOffset, intersection.Location.X + trafficLineOffset, intersection.Location.Y - trafficLineOffset);
             }
 
             var carPens = new List<Tuple<float, Pen>>
@@ -61,9 +61,9 @@ namespace TrafficSim.WinForms
             foreach (var car in _cars)
             {
                 var carPen = carPens.First(x => x.Item1 > car.Frustration).Item2;
-                var leftAdjuster = car.Direction == Direction.South ? 8 : 0;
-                var upAdjuster = car.Direction == Direction.West ? -8 : 0;
-                graphics.DrawEllipse(carPen, car.X - leftAdjuster, car.Y + upAdjuster, 5, 5);
+                var leftAdjuster = car.Phase.Direction == Direction.South ? 8 : 0;
+                var upAdjuster = car.Phase.Direction == Direction.West ? -8 : 0;
+                graphics.DrawEllipse(carPen, car.Phase.Location.X - leftAdjuster, car.Phase.Location.Y + upAdjuster, 5, 5);
             }
 
             ( sender as TaskCompletionSource<int>)?.SetResult(1);

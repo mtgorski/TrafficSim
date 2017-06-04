@@ -33,9 +33,11 @@ namespace TrafficSim.Core
             return _intersections.GetEnumerator();
         }
 
-        public bool WillAllow(int x, int y, Direction fromDirection)
+        public bool WillAllowPhase(Phase phase)
         {
-            switch (fromDirection)
+            var x = phase.Location.X;
+            var y = phase.Location.Y;
+            switch (phase.Direction)
             {
                 case Direction.South:
                     y += 10;
@@ -50,14 +52,15 @@ namespace TrafficSim.Core
                     x -= 10;
                     break;
             }
+            var intersectionLocation = new Location {X = x, Y = y};
 
             var relevantIntersection =
-                _intersections.SingleOrDefault(intersection => intersection.X == x && intersection.Y == y);
+                _intersections.SingleOrDefault(intersection => intersection.Location.Equals(intersectionLocation));
 
             if (relevantIntersection == null)
                 return true;
 
-            switch (fromDirection)
+            switch (phase.Direction)
             {
                 case Direction.East:
                     return relevantIntersection.Left == Color.Green;

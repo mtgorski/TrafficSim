@@ -12,8 +12,7 @@ namespace TrafficSim.Core
 
         public Intersection(int x, int y)
         {
-            X = x;
-            Y = y;
+            Location = new Location {X = x, Y = y};
             Left = Color.Red;
             Right = Color.Red;
             Top = Color.Red;
@@ -28,8 +27,7 @@ namespace TrafficSim.Core
 
         public Color Left { get; set; }
 
-        public int X { get; }
-        public int Y { get; }
+        public Location Location { get; set; }
 
         public void MoveNext()
         {

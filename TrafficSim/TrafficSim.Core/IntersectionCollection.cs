@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace TrafficSim.Core
@@ -15,11 +13,11 @@ namespace TrafficSim.Core
             _intersections = intersections.ToList();
         }
 
-        public void Tick()
+        public void Tick(Simulator simulator)
         {
             foreach (var intersection in _intersections)
             {
-                intersection.Tick();
+                intersection.Tick(simulator);
             }
         }
 
@@ -43,7 +41,7 @@ namespace TrafficSim.Core
             if (relevantIntersection == null)
                 return true;
 
-            return relevantIntersection.Lights[intendedPhase.Direction] == Color.Green;            
+            return relevantIntersection.Lights[intendedPhase.Direction] == LightColor.Green;            
         }
     }
 }

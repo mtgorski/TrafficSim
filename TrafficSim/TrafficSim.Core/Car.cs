@@ -13,11 +13,11 @@
 
         public Phase Phase { get; private set; }
 
-        public void Tick(IntersectionCollection intersections, CarCollection cars)
+        public void Tick(Simulator simulator)
         {
             var intendedPhase = Phase.GetPhasedAdvancedBy(10);
 
-            if (intersections.WillAllowPhase(intendedPhase) && cars.WillAllowPhase(this, intendedPhase))
+            if (simulator.WillAllowPhase(this, intendedPhase))
             {
                 Phase = intendedPhase;
                 _timesMoving++;

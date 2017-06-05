@@ -7,13 +7,10 @@ namespace TrafficSim.Core
 {
     public class CarCollection : IEnumerable<Car>
     {
-        private readonly StreetDescription _streets;
         private readonly List<Car> _cars;
-        private readonly Random _rng = new Random();
 
-        public CarCollection(StreetDescription streets)
+        public CarCollection()
         {
-            _streets = streets;
             _cars = new List<Car>();
         }
 
@@ -27,65 +24,13 @@ namespace TrafficSim.Core
             return _cars.GetEnumerator();
         }
 
-        private void InjectCars()
+        public void Tick(Simulator simulator)
         {
-            foreach (var road in _streets.HorizontalRoads)
-            {
-                if (_rng.Next(10) < 2)
-                {
-                    var injectionPhase = new Phase {Direction = Direction.East, Location = new Location {X = 0, Y = road} };
-                    if(!_cars.Any(car => car.Phase.Equals(injectionPhase)))
-                        _cars.Add(new Car(0, road, Direction.East));
-                }
-
-                if (_rng.Next(10) < 2)
-                {
-                    var injectionPhase = new Phase
-                    {
-                        Direction = Direction.West,
-                        Location = new Location {X = 1100, Y = road}
-                    };
-                    if (!_cars.Any(car => car.Phase.Equals(injectionPhase)))
-                        _cars.Add(new Car(1100, road, Direction.West));
-                }
-            }
-
-            foreach (var road in _streets.VerticalRoads)
-            {
-                if (_rng.Next(10) < 2)
-                {
-                    var injectionPhase = new Phase
-                    {
-                        Direction = Direction.South,
-                        Location = new Location {X = road, Y = 0}
-                    };
-                    if(!_cars.Any(car => car.Phase.Equals(injectionPhase)))
-                        _cars.Add(new Car(road, 0, Direction.South));
-                }
-
-                if (_rng.Next(10) < 2)
-                {
-                    var injectionPhase = new Phase
-                    {
-                        Direction = Direction.North,
-                        Location = new Location {X = road, Y = 1100}
-                    };
-                    if (!_cars.Any(car => car.Phase.Equals(injectionPhase)))
-                        _cars.Add(new Car(road, 1100, Direction.North));
-                }
-            }
-        }
-
-        public void Tick(IntersectionCollection intersections)
-        {
-            InjectCars();
 
             foreach (var car in _cars)
             {
-                car.Tick(intersections, this);
+                car.Tick(simulator);
             }
-
-            var toDelete = new List<Car>();
 
             foreach (var car in _cars)
             {
@@ -96,25 +41,9 @@ namespace TrafficSim.Core
                 if(sameLocationCars.Any(otherCar => 
                     (!otherCar.Phase.Direction.IsOpposite(car.Phase.Direction)
                     )))
-                    throw new InvalidOperationException("TBone!");
-
-                if (car.Phase.Location.X < 0 || car.Phase.Location.X > 1100)
-                {
-                    toDelete.Add(car);
-                }
-                else if (car.Phase.Location.Y < 0 || car.Phase.Location.Y > 1100)
-                {
-                    toDelete.Add(car);
-                }  
-            }
-
-            foreach (var car in toDelete)
-            {
-                _cars.Remove(car);
+                    throw new InvalidOperationException("TBone!"); 
             }
         }
-
-       
 
         public bool WillAllowPhase(Car car, Phase intentedPhase)
         {
@@ -135,6 +64,16 @@ namespace TrafficSim.Core
             }
 
             return true; 
+        }
+
+        public void Add(Car car)
+        {
+            _cars.Add(car);
+        }
+
+        public void Remove(Car car)
+        {
+            _cars.Remove(car);
         }
     }
 }

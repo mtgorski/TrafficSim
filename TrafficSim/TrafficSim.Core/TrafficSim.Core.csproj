@@ -43,10 +43,12 @@
   <ItemGroup>
     <Compile Include="Car.cs" />
     <Compile Include="CarCollection.cs" />
-    <Compile Include="Class1.cs" />
+    <Compile Include="CarDeleter.cs" />
+    <Compile Include="CarInjector.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Intersection.cs" />
     <Compile Include="IntersectionCollection.cs" />
+    <Compile Include="LightColor.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Phase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

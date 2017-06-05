@@ -36,11 +36,11 @@ namespace TrafficSim.WinForms
                 graphics.DrawLine(pen, road, 0, road, 1100);
             }
 
-            var colors = new Dictionary<Color, Pen>
+            var colors = new Dictionary<LightColor, Pen>
             {
-                {Color.Red, new Pen(Color.Red, 3)},
-                {Color.Yellow, new Pen(Color.Yellow, 3) },
-                {Color.Green, new Pen(Color.Green, 3)}
+                {LightColor.Red, new Pen(Color.Red, 3)},
+                {LightColor.Yellow, new Pen(Color.Yellow, 3) },
+                {LightColor.Green, new Pen(Color.Green, 3)}
             };
 
             const int trafficLineOffset = 7;

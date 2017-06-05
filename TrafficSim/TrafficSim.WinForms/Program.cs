@@ -18,22 +18,24 @@ namespace TrafficSim.WinForms
             var streets = new StreetDescription(horizontalRoads: new int[] {200, 500, 600}, verticalRoads: new int[] {200, 300, 400, 600, 800});
              
             var intersections = new IntersectionCollection(streets.Intersections);
-            var carCollection = new CarCollection(streets);
+            var carCollection = new CarCollection();
             var form = new MainForm(streets, intersections, carCollection);
-            Task.Run(() => MainLoop(intersections, carCollection, form));
+            var injector = new CarInjector();
+            var deleter = new CarDeleter();
+            var simulator = new Simulator(streets, intersections, carCollection, injector, deleter);
+            Task.Run(() => MainLoop(form, simulator));
             Application.Run(form);
         }
 
-        private static async Task MainLoop(IntersectionCollection intersections, CarCollection carCollection, MainForm sim)
+        private static async Task MainLoop(MainForm form, Simulator simulator)
         {
-            var simulator = new Simulator(intersections, carCollection);
 
             while (true)
             {
                 await Task.Delay(1000);
                 simulator.Tick();
                 var tcs = new TaskCompletionSource<int>();
-                sim.Draw(tcs);
+                form.Draw(tcs);
                 await tcs.Task;
             }
         }

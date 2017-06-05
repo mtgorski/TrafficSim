@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
+﻿using System.Collections.Generic;
 
 namespace TrafficSim.Core
 {
@@ -13,43 +10,43 @@ namespace TrafficSim.Core
         public Intersection(int x, int y)
         {
             Location = new Location {X = x, Y = y};
-            Lights = new Dictionary<Direction, Color>
+            Lights = new Dictionary<Direction, LightColor>
             {
-                {Direction.North, Color.Red},
-                {Direction.South, Color.Red},
-                {Direction.West, Color.Red},
-                {Direction.East, Color.Red}
+                {Direction.North, LightColor.Red},
+                {Direction.South, LightColor.Red},
+                {Direction.West, LightColor.Red},
+                {Direction.East, LightColor.Red}
             };
         }
 
-        public Location Location { get; set; }
-        public Dictionary<Direction, Color> Lights { get; }
+        public Location Location { get; }
+        public Dictionary<Direction, LightColor> Lights { get; }
 
-        public void Tick()
+        public void Tick(Simulator simulator)
         {
             _time++;
 
             if (_time % 20 == 0)
             {
-                if (Lights[Direction.West] == Color.Green)
+                if (Lights[Direction.West] == LightColor.Green)
                 {
-                    Lights[Direction.West] = Lights[Direction.East] = Color.Yellow;
+                    Lights[Direction.West] = Lights[Direction.East] = LightColor.Yellow;
                 }                    
                 else
                 {
-                    Lights[Direction.North] = Lights[Direction.South] = Color.Yellow;
+                    Lights[Direction.North] = Lights[Direction.South] = LightColor.Yellow;
                 }
             }
 
             if (_time % 20 == 1)
             {
-                if (Lights[Direction.West] == Color.Yellow)
+                if (Lights[Direction.West] == LightColor.Yellow)
                 {
-                    Lights[Direction.West] = Lights[Direction.East] = Color.Red;
+                    Lights[Direction.West] = Lights[Direction.East] = LightColor.Red;
                 }
                 else
                 {
-                    Lights[Direction.North] = Lights[Direction.South] = Color.Red;
+                    Lights[Direction.North] = Lights[Direction.South] = LightColor.Red;
                 }
             }
 
@@ -58,12 +55,12 @@ namespace TrafficSim.Core
                 if (_letLeft)
                 {
                     _letLeft = false;
-                    Lights[Direction.West] = Lights[Direction.East] = Color.Green;
+                    Lights[Direction.West] = Lights[Direction.East] = LightColor.Green;
                 }
                 else
                 {
                     _letLeft = true;
-                    Lights[Direction.North] = Lights[Direction.South] = Color.Green;
+                    Lights[Direction.North] = Lights[Direction.South] = LightColor.Green;
                 }
             }
         }
